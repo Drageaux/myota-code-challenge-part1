@@ -1,14 +1,13 @@
 package system;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static system.Command.*;
 import static system.Type.*;
 
-/**
- * Created by Thong on 10/5/2018.
- */
+
 public class DirectorySystem {
 
     protected Folder rootDir = new Folder("/");
@@ -24,6 +23,7 @@ public class DirectorySystem {
     protected Folder root() {
         return this.rootDir;
     }
+
 
     /**
      * Adds a child node to the parent node.
@@ -42,6 +42,7 @@ public class DirectorySystem {
         return false;
     }
 
+
     /**
      * Detects whether node creates a cycle.
      *
@@ -49,8 +50,16 @@ public class DirectorySystem {
      * @return true if detects a cycle in a graph including node; false if there is no cycle
      */
     protected boolean detectCycle(Node node) {
-        if (node.getType() == TYPE_FILE) return false;
-        // in order to detect cycles, we need to record all parents as well as children
+        if (node.getType() == TYPE_FILE) {
+            return false;
+        } else if (node.getType() == TYPE_FOLDER) {
+            // in order to detect cycles, we need to record all parents as well as children
+            Folder folder = (Folder) node;
+            HashSet<Node> set = new HashSet<Node>();
+            for (Node n : folder.getChildren()){
+
+            }
+        }
 
         return false;
     }
@@ -67,7 +76,7 @@ public class DirectorySystem {
         System.out.println(results);
     }
 
-    
+
     private String getRootStructure(Folder root) {
         String results = "";
         // add to String array
