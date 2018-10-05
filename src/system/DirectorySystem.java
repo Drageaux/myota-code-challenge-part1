@@ -104,7 +104,7 @@ public class DirectorySystem {
         // root level's children
         for (Node n : root.getChildren()) {
             resultsList.add("/" + n);
-            resultsList.addAll(this.getChildRecursive(n, "/"));
+            resultsList.addAll(this.getChildRecursive(n, "/" + n + "/"));
         }
 
         // loop resultList to compile a String type result
