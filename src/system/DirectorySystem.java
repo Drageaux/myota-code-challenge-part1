@@ -1,7 +1,5 @@
 package system;
 
-import java.util.Scanner;
-
 import static system.Command.*;
 import static system.Type.*;
 
@@ -10,7 +8,7 @@ import static system.Type.*;
  */
 public class DirectorySystem {
 
-    private Node rootDir = new Node("/", TYPE_FOLDER);
+    protected Folder rootDir = new Folder("/");
 
 
     public DirectorySystem() {
@@ -20,7 +18,7 @@ public class DirectorySystem {
     /**
      * @return
      */
-    Node root() {
+    protected Folder root() {
         return this.rootDir;
     }
 
@@ -31,22 +29,48 @@ public class DirectorySystem {
      * @param child
      * @return true if successfully created; false otherwise
      */
-    boolean addChild(Node parent, Node child) {
+    protected boolean addChild(Folder parent, Node child) {
+        // parent must be a folder
+        // parent and child instances are not the same
+        if (parent.getType() == TYPE_FOLDER && parent != child) {
+            parent.children.add(child);
+            System.out.println("parent " + parent + " added child " + child);
+        }
         return false;
     }
 
     /**
-     * Detects whether node is both a parent and a child of another node.
+     * Detects whether node creates a cycle.
      *
      * @param node
      * @return true if detects a cycle in a graph including node; false if there is no cycle
      */
-    boolean detectCycle(Node node) {
+    protected boolean detectCycle(Node node) {
+        if (node.getType() == TYPE_FILE) return false;
+        // in order to detect cycles, we need to record all parents as well as children
+
         return false;
     }
 
-    void retrieve(Node root) {
-        System.out.println(this.root());
+
+    /**
+     * Prints complete path of all nodes in the directory system.
+     *
+     * @param root
+     */
+    protected void retrieve(Node root) {
+        System.out.println(root);
+        if (root.getType() == TYPE_FOLDER) {
+            // if is a folder, retrieve recursively
+            Folder r = (Folder) root;
+            for (Node n : r.getChildren()) {
+                if (r.getName() == "/") { // don't add slash if parent is root
+                    System.out.println("/" + n);
+                } else {
+                    System.out.println(r + "/" + n);
+                }
+            }
+        }
     }
 
 
@@ -55,7 +79,11 @@ public class DirectorySystem {
             default:
                 return;
             case CMD_RETRIEVE:
+                this.retrieve(this.root());
                 return;
+            case 2:
+                ExampleSystem1 ex1 = new ExampleSystem1();
+                ex1.retrieve(ex1.root());
         }
     }
 }

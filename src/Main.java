@@ -15,7 +15,7 @@ public class Main {
         while (!exit) {
             Scanner sc = new Scanner(System.in);
             int choice = -1;
-            while (choice < 0 || choice > 4) {
+            while (choice < 0 || choice > 3) {
                 try {
                     System.out.println("Menu");
                     System.out.println("1. Print complete path of all nodes");
