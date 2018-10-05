@@ -8,14 +8,14 @@ import java.util.List;
  */
 public class Node {
 
-
     private String name;
     private int type;
-    List<Node> children = new ArrayList<Node>();
+    private Node directParent;
 
-    public Node(String name, int type) {
+    public Node(String name, int type, Node directParent) {
         this.name = name;
         this.type = type;
+        this.directParent = directParent;
     }
 
     public String getName() {
