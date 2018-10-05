@@ -1,5 +1,8 @@
 package system;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static system.Command.*;
 import static system.Type.*;
 
@@ -55,25 +58,50 @@ public class DirectorySystem {
 
     /**
      * Prints complete path of all nodes in the directory system.
+     * (NOTE: the restraint that this method returns
      *
      * @param root
      */
     protected void retrieve(Node root) {
-        System.out.println(root);
-        if (root.getType() == TYPE_FOLDER) {
-            // if is a folder, retrieve recursively
-            Folder r = (Folder) root;
-            for (Node n : r.getChildren()) {
-                if (r.getName() == "/") { // don't add slash if parent is root
-                    // print root first, then append each immediate child
-                    System.out.print(r);
-                    this.retrieve(n);
-                } else { // if not root
-                    System.out.print("/" + root + "/");
-                    this.retrieve(n);
-                }
-            }
+
+        // add root, go through each child
+        // each child will append its child, meaning no longer self
+
+//        if (root.getType() == TYPE_FOLDER) {
+//            // if is a folder, retrieve recursively
+//            Folder r = (Folder) root;
+//            if (root.getName() == "/") { // exclusive line for root
+//                System.out.println("/");
+//                for (Node n : r.getChildren()) {
+//                    System.out.println("/" + n);
+//                    this.retrieve(n); // then add each child
+//                }
+//            } else {
+//                for (Node n : r.getChildren()) {
+//                    System.out.print("/"); // prefix with a single slash only
+//                    System.out.print(n);
+//                    this.retrieve(n);
+//                    System.out.println("/" + n);
+//                }
+//            }
+//        } else if (root.getType() == TYPE_FILE) {
+//
+//            System.out.println("/" + root);
+//        }
+    }
+
+    private String getChildRecursive(Node parent, String prefix) {
+        String results = parent.toString();
+        // add to String array
+        // each String is a full path
+        // to find each String, follow each node to the end
+        List<String> resultList = new ArrayList<String>();
+
+        if (parent.getType() == TYPE_FOLDER){
+
         }
+
+        return "";
     }
 
 
