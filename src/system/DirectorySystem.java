@@ -1,5 +1,6 @@
 package system;
 
+import static system.Command.*;
 import static system.Type.TYPE_DIR;
 
 /**
@@ -10,7 +11,7 @@ public class DirectorySystem {
     private Node rootDir = new Node("/", TYPE_DIR);
 
 
-    public DirectorySystem (){
+    public DirectorySystem() {
 
     }
 
@@ -44,6 +45,24 @@ public class DirectorySystem {
 
     void retrieve(Node root) {
         System.out.println(this.root());
+    }
+
+
+    public void execute(int cmd) {
+        switch (cmd) {
+            default:
+                return;
+            case CMD_ROOT:
+                Node r = this.root();
+                System.out.printf("\"%s\"", r);
+                return;
+            case CMD_ADD_CHILD:
+                return;
+            case CMD_DETECT_CYCLE:
+                return;
+            case CMD_RETRIEVE:
+                return;
+        }
     }
 }
 
