@@ -65,9 +65,12 @@ public class DirectorySystem {
             Folder r = (Folder) root;
             for (Node n : r.getChildren()) {
                 if (r.getName() == "/") { // don't add slash if parent is root
-                    System.out.println("/" + n);
-                } else {
-                    System.out.println(r + "/" + n);
+                    // print root first, then append each immediate child
+                    System.out.print(r);
+                    this.retrieve(n);
+                } else { // if not root
+                    System.out.print("/" + root + "/");
+                    this.retrieve(n);
                 }
             }
         }
