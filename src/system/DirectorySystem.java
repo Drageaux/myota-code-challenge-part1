@@ -63,36 +63,11 @@ public class DirectorySystem {
      * @param root
      */
     protected void retrieve(Node root) {
-
-        // add root, go through each child
-        // each child will append its child, meaning no longer self
-
-//        if (root.getType() == TYPE_FOLDER) {
-//            // if is a folder, retrieve recursively
-//            Folder r = (Folder) root;
-//            if (root.getName() == "/") { // exclusive line for root
-//                System.out.println("/");
-//                for (Node n : r.getChildren()) {
-//                    System.out.println("/" + n);
-//                    this.retrieve(n); // then add each child
-//                }
-//            } else {
-//                for (Node n : r.getChildren()) {
-//                    System.out.print("/"); // prefix with a single slash only
-//                    System.out.print(n);
-//                    this.retrieve(n);
-//                    System.out.println("/" + n);
-//                }
-//            }
-//        } else if (root.getType() == TYPE_FILE) {
-//
-//            System.out.println("/" + root);
-//        }
-
         String results = this.getRootStructure(this.root());
         System.out.println(results);
     }
 
+    
     private String getRootStructure(Folder root) {
         String results = "";
         // add to String array
@@ -114,8 +89,8 @@ public class DirectorySystem {
         return results;
     }
 
+
     private List<String> getChildRecursive(Node parent, String prefix) {
-        System.out.println("parent is " + parent);
         List<String> resultList = new ArrayList<String>();
 
         if (parent.getType() == TYPE_FOLDER) {

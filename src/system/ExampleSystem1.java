@@ -29,5 +29,6 @@ public class ExampleSystem1 extends DirectorySystem {
         this.addChild(v1, v4);
 
         this.addChild(v2, v4);
+        this.addChild(v4, v3);
     }
 }
