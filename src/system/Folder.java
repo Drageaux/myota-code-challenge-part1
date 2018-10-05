@@ -8,7 +8,7 @@ public class Folder extends Node {
     protected List<Node> children = new ArrayList<Node>();
 
     public Folder(String name) {
-        super(name, Type.TYPE_FOLDER);
+        super(name, Type.TYPE_DIR);
     }
 
     public List<Node> getChildren() {

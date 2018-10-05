@@ -18,7 +18,7 @@ public class DirectorySystem {
     }
 
     /**
-     * @return
+     * @return the root folder Node
      */
     protected Folder root() {
         return this.rootDir;
@@ -35,7 +35,7 @@ public class DirectorySystem {
     protected boolean addChild(Folder parent, Node child) {
         // parent must be a folder
         // parent and child instances are not the same
-        if (parent.getType() == TYPE_FOLDER && parent != child) {
+        if (parent.getType() == TYPE_DIR && parent != child) {
             parent.children.add(child);
             System.out.println("parent " + parent + " added child " + child);
         }
@@ -52,11 +52,11 @@ public class DirectorySystem {
     protected boolean detectCycle(Node node) {
         if (node.getType() == TYPE_FILE) {
             return false;
-        } else if (node.getType() == TYPE_FOLDER) {
+        } else if (node.getType() == TYPE_DIR) {
             // in order to detect cycles, we need to record all parents as well as children
             Folder folder = (Folder) node;
             HashSet<Node> set = new HashSet<Node>();
-            for (Node n : folder.getChildren()){
+            for (Node n : folder.getChildren()) {
 
             }
         }
@@ -102,7 +102,7 @@ public class DirectorySystem {
     private List<String> getChildRecursive(Node parent, String prefix) {
         List<String> resultList = new ArrayList<String>();
 
-        if (parent.getType() == TYPE_FOLDER) {
+        if (parent.getType() == TYPE_DIR) {
             Folder p = (Folder) parent;
             for (Node n : p.getChildren()) {
                 resultList.add(prefix + n);
