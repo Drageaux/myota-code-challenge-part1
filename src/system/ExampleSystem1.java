@@ -21,11 +21,11 @@ public class ExampleSystem1 extends DirectorySystem {
         // basic
         this.addChild(root, v1);
         this.addChild(root, v2);
-//        this.addChild(root, v3);
+        this.addChild(root, v3);
         this.addChild(root, v4);
 
         this.addChild(v1, v2);
-//        this.addChild(v1, v3);
+        this.addChild(v1, v3);
         this.addChild(v1, v4);
 
         this.addChild(v2, v4);
