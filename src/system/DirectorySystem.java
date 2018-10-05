@@ -98,25 +98,35 @@ public class DirectorySystem {
         // add to String array
         // each String is a full path
         // to find each String, follow each node to the end
-        List<String> resultList = new ArrayList<String>();
+        List<String> resultsList = new ArrayList<String>();
 
-        resultList.add("/");
+        resultsList.add("/");
         // root level's children
         for (Node n : root.getChildren()) {
-            resultList.add("/" + n);
+            resultsList.add("/" + n);
+            resultsList.addAll(this.getChildRecursive(n, "/"));
         }
 
         // loop resultList to compile a String type result
-        for (String s : resultList) {
+        for (String s : resultsList) {
             results += "\n" + s;
         }
         return results;
     }
 
-    private String getChildRecursive(Node parent, String prefix) {
+    private List<String> getChildRecursive(Node parent, String prefix) {
+        System.out.println("parent is " + parent);
+        List<String> resultList = new ArrayList<String>();
 
+        if (parent.getType() == TYPE_FOLDER) {
+            Folder p = (Folder) parent;
+            for (Node n : p.getChildren()) {
+                resultList.add(prefix + n);
+                resultList.addAll(getChildRecursive(n, prefix + n + "/"));
+            }
+        }
 
-        return "";
+        return resultList;
     }
 
 
