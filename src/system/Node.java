@@ -10,10 +10,10 @@ public class Node {
 
 
     private String name;
-    private Type type;
+    private int type;
     List<Node> children = new ArrayList<Node>();
 
-    public Node(String name, Type type) {
+    public Node(String name, int type) {
         this.name = name;
         this.type = type;
     }
@@ -22,7 +22,7 @@ public class Node {
         return this.name;
     }
 
-    public Type getType() {
+    public int getType() {
         return this.type;
     }
 

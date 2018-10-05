@@ -9,15 +9,17 @@ public class Main {
         DirectorySystem dirSystem = new DirectorySystem();
         boolean exit = false;
 
+
+        System.out.println("Welcome to the Multi-Parent Directory System!\n");
+
         while (!exit) {
             Scanner sc = new Scanner(System.in);
             int choice = -1;
             while (choice < 0 || choice > 4) {
                 try {
-                    System.out.println("1. Get root directory");
-                    System.out.println("2. Add child");
-                    System.out.println("3. Detect cycle");
-                    System.out.println("4. Print complete path of all nodes");
+                    System.out.println("Menu");
+                    System.out.println("1. Print complete path of all nodes");
+                    System.out.println("0. Exit");
                     System.out.print("Enter your command: ");
                     choice = Integer.parseInt(sc.nextLine()); // already throws
                 } catch (NumberFormatException e) {

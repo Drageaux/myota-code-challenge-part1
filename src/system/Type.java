@@ -1,5 +1,6 @@
 package system;
 
-public enum Type {
-    TYPE_FILE, TYPE_DIR;
+public class Type {
+    public static final int TYPE_FILE = 1;
+    public static final int TYPE_FOLDER = 2;
 }

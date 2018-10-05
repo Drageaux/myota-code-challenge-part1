@@ -1,14 +1,16 @@
 package system;
 
+import java.util.Scanner;
+
 import static system.Command.*;
-import static system.Type.TYPE_DIR;
+import static system.Type.*;
 
 /**
  * Created by Thong on 10/5/2018.
  */
 public class DirectorySystem {
 
-    private Node rootDir = new Node("/", TYPE_DIR);
+    private Node rootDir = new Node("/", TYPE_FOLDER);
 
 
     public DirectorySystem() {
@@ -51,14 +53,6 @@ public class DirectorySystem {
     public void execute(int cmd) {
         switch (cmd) {
             default:
-                return;
-            case CMD_ROOT:
-                Node r = this.root();
-                System.out.printf("\"%s\"", r);
-                return;
-            case CMD_ADD_CHILD:
-                return;
-            case CMD_DETECT_CYCLE:
                 return;
             case CMD_RETRIEVE:
                 return;
