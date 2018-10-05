@@ -88,18 +88,33 @@ public class DirectorySystem {
 //
 //            System.out.println("/" + root);
 //        }
+
+        String results = this.getRootStructure(this.root());
+        System.out.println(results);
     }
 
-    private String getChildRecursive(Node parent, String prefix) {
-        String results = parent.toString();
+    private String getRootStructure(Folder root) {
+        String results = "";
         // add to String array
         // each String is a full path
         // to find each String, follow each node to the end
         List<String> resultList = new ArrayList<String>();
 
-        if (parent.getType() == TYPE_FOLDER){
-
+        resultList.add("/");
+        // root level's children
+        for (Node n : root.getChildren()) {
+            resultList.add("/" + n);
         }
+
+        // loop resultList to compile a String type result
+        for (String s : resultList) {
+            results += "\n" + s;
+        }
+        return results;
+    }
+
+    private String getChildRecursive(Node parent, String prefix) {
+
 
         return "";
     }
