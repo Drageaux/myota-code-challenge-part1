@@ -103,6 +103,7 @@ public class DirectorySystem {
         List<String> resultList = new ArrayList<String>();
 
         if (parent.getType() == TYPE_DIR) {
+            // type casting to allow parent to getChildren()
             Folder p = (Folder) parent;
             for (Node n : p.getChildren()) {
                 resultList.add(prefix + n);
