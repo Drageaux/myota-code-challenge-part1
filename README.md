@@ -1,5 +1,8 @@
 ###README
 
+- Navigate into the src folder of this project via the command line
+- Run "javac Main.java" to compile the program
+- Run "java Main" to use to program
 - Follow the menu and enter inputs as prompted
   1. Option 1 creates a fresh system to prove sanity
   2. Option 2 creates a system that mimics the Example 1 graph in the instruction, then prints all paths
