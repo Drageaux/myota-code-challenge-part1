@@ -36,6 +36,8 @@ public class DirectorySystem {
         // parent must be a folder
         // parent and child instances are not the same
         if (parent.getType() == TYPE_DIR && parent != child) {
+            // detect an instance of all tables
+
             parent.children.add(child);
             System.out.println("parent " + parent + " added child " + child);
         }
@@ -45,6 +47,7 @@ public class DirectorySystem {
 
     /**
      * Detects whether node creates a cycle.
+     * (NOTE: suffers in performance as both numbers of parents and children increase)
      *
      * @param node
      * @return true if detects a cycle in a graph including node; false if there is no cycle
@@ -57,7 +60,26 @@ public class DirectorySystem {
             Folder folder = (Folder) node;
             HashSet<Node> set = new HashSet<Node>();
             for (Node n : folder.getChildren()) {
+                if (this.findCurrentNodeInChildren(n, set)) {
+                    return true;
+                }
+            }
+        }
 
+        return false;
+    }
+
+    protected boolean findCurrentNodeInChildren(Node parent, HashSet<Node> set) {
+        if (parent.getType() != TYPE_DIR) return false;
+
+        Folder parentFolder = (Folder) parent;
+        for (Node n : parentFolder.getChildren()) {
+            if (set.contains(n)) {
+                return true;
+            } else {
+
+                set.add(n);
+                this.findCurrentNodeInChildren(n, set);
             }
         }
 
@@ -67,7 +89,7 @@ public class DirectorySystem {
 
     /**
      * Prints complete path of all nodes in the directory system.
-     * (NOTE: the restraint that this method returns
+     * (NOTE: the restraints of this method, such as return type and arg type makes it a bad candidate for recursion)
      *
      * @param root
      */
