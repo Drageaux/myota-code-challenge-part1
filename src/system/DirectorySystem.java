@@ -1,8 +1,7 @@
 package system;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static system.Command.*;
 import static system.Type.*;
@@ -14,7 +13,6 @@ public class DirectorySystem {
 
 
     public DirectorySystem() {
-
     }
 
     /**
@@ -37,10 +35,9 @@ public class DirectorySystem {
         // parent and child instances are not the same
         if (parent.getType() == TYPE_DIR && parent != child) {
 
-            // TODO: need BFS
+            // BFS to find duplicate
             if (child.getType() == TYPE_DIR) {
-                Folder childFolder = (Folder) child;
-                if (this.childrenBreadFirstSearch(parent)) {
+                if (this.childrenBreadFirstSearch(parent, child)) {
                     System.out.println("STOP, found duplicate");
                     return false;
                 }
@@ -54,43 +51,6 @@ public class DirectorySystem {
         return false;
     }
 
-    protected boolean childrenBreadFirstSearch(Node node) {
-        // for each child of startingNode, add child to queue
-        //  once all node are added, remove node from head of queue
-        //  update startingNode to be what is head of queue
-
-        HashSet<Node> visited = new HashSet<Node>();
-        Queue<Node> q = new LinkedList<Node>();
-
-        q.add(node);
-
-        while (q.size() != 0) {
-            Node currTop = q.poll();
-            System.out.println("queuing " + currTop);
-
-            if (node.getType() == TYPE_DIR) {
-                Folder folder = (Folder) currTop; // type cast to get children
-                // list all child folders
-                for (Node n :
-                        (List<Node>) folder.getChildren()
-                                .stream()
-                                .filter(x -> x.getType() == TYPE_DIR)
-                        ) {
-                    if (n == node) {
-                        System.out.println("STOP, found match");
-                        return true;
-                    } else {
-                        visited.add(folder);
-                        q.add(n);
-                    }
-                }
-            }
-        }
-
-
-        return false;
-    }
-
 
     /**
      * Detects whether node creates a cycle (only folders can create cycles).
@@ -101,12 +61,50 @@ public class DirectorySystem {
      */
     protected boolean detectCycle(Node node) {
         if (node.getType() == TYPE_FILE) {
-            // FIXME: not sure if this is 100% true; not specified in requirements; could be implied
+            // not sure if this is 100% true; not specified in requirements; could be implied
             System.out.println(node + " is a file and cannot create cycle");
             return false;
         } else if (node.getType() == TYPE_DIR) {
-            Folder folder = (Folder) node;
-            folder.children.contains(node);
+            if (this.childrenBreadFirstSearch(node, node)) {
+                System.out.println("TRUE. This node creates a cycle.");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    protected boolean childrenBreadFirstSearch(Node parent, Node child) {
+        // for each child of startingNode, add child to queue
+        //  once all node are added, remove node from head of queue
+        //  update startingNode to be what is head of queue
+
+        HashSet<Node> visited = new HashSet<Node>();
+        Queue<Node> q = new LinkedList<Node>();
+
+        q.add(child);
+
+        while (q.size() != 0) {
+            Node currTop = q.poll();
+            System.out.println("queuing " + currTop);
+
+            if (child.getType() == TYPE_DIR) {
+                Folder folder = (Folder) currTop; // type cast to get children
+
+                // list all child folders in a stream; fancy code
+                for (Node n : folder.getChildren()
+                        .stream()
+                        .filter(x -> x.getType() == TYPE_DIR)
+                        .collect(Collectors.toList())) {
+                    if (n == parent) {
+                        return true;
+                    } else {
+                        visited.add(folder);
+                        q.add(n);
+                    }
+                }
+            }
         }
 
         return false;
@@ -120,8 +118,9 @@ public class DirectorySystem {
      * @param root
      */
     protected void retrieve(Node root) {
+        System.out.println("\nExecuting...");
         String results = this.getRootStructure(this.root());
-        System.out.println(results + "\nDone");
+        System.out.println(results + "\n\nDone!");
     }
 
 

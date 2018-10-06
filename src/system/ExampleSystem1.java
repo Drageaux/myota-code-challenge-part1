@@ -11,6 +11,8 @@ import system.Node;
 public class ExampleSystem1 extends DirectorySystem {
 
     public ExampleSystem1() {
+        System.out.println("\nInitializing Example 1 system...\n");
+
         Folder v1 = new Folder("v1");
         Folder v2 = new Folder("v2");
         File v3 = new File("v3");
