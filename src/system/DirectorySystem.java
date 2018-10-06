@@ -1,29 +1,27 @@
 package system;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static system.Command.*;
 import static system.Type.*;
 
-/**
- * Created by Thong on 10/5/2018.
- */
+
 public class DirectorySystem {
 
     protected Folder rootDir = new Folder("/");
 
 
     public DirectorySystem() {
-
     }
 
     /**
-     * @return
+     * @return the root folder Node
      */
     protected Folder root() {
         return this.rootDir;
     }
+
 
     /**
      * Adds a child node to the parent node.
@@ -35,22 +33,79 @@ public class DirectorySystem {
     protected boolean addChild(Folder parent, Node child) {
         // parent must be a folder
         // parent and child instances are not the same
-        if (parent.getType() == TYPE_FOLDER && parent != child) {
+        if (parent.getType() == TYPE_DIR && parent != child) {
+
+            // BFS to find duplicate
+            if (child.getType() == TYPE_DIR) {
+                if (this.childrenBreadFirstSearch(parent, child)) {
+                    System.out.println("STOP, found duplicate");
+                    return false;
+                }
+            }
+
             parent.children.add(child);
             System.out.println("parent " + parent + " added child " + child);
+        } else {
+            System.out.println("parent " + parent + " is not a folder or is the same as child " + child);
         }
         return false;
     }
 
+
     /**
-     * Detects whether node creates a cycle.
+     * Detects whether node creates a cycle (only folders can create cycles).
+     * (NOTE: suffers in performance as both numbers of parents and children increase)
      *
      * @param node
      * @return true if detects a cycle in a graph including node; false if there is no cycle
      */
     protected boolean detectCycle(Node node) {
-        if (node.getType() == TYPE_FILE) return false;
-        // in order to detect cycles, we need to record all parents as well as children
+        if (node.getType() == TYPE_FILE) {
+            // not sure if this is 100% true; not specified in requirements; could be implied
+            System.out.println(node + " is a file and cannot create cycle");
+            return false;
+        } else if (node.getType() == TYPE_DIR) {
+            if (this.childrenBreadFirstSearch(node, node)) {
+                System.out.println("TRUE. This node creates a cycle.");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    protected boolean childrenBreadFirstSearch(Node parent, Node child) {
+        // for each child of startingNode, add child to queue
+        //  once all node are added, remove node from head of queue
+        //  update startingNode to be what is head of queue
+
+        HashSet<Node> visited = new HashSet<Node>();
+        Queue<Node> q = new LinkedList<Node>();
+
+        q.add(child);
+
+        while (q.size() != 0) {
+            Node currTop = q.poll();
+            System.out.println("queuing " + currTop);
+
+            if (child.getType() == TYPE_DIR) {
+                Folder folder = (Folder) currTop; // type cast to get children
+
+                // list all child folders in a stream; fancy code
+                for (Node n : folder.getChildren()
+                        .stream()
+                        .filter(x -> x.getType() == TYPE_DIR)
+                        .collect(Collectors.toList())) {
+                    if (n == parent) {
+                        return true;
+                    } else {
+                        visited.add(folder);
+                        q.add(n);
+                    }
+                }
+            }
+        }
 
         return false;
     }
@@ -58,16 +113,17 @@ public class DirectorySystem {
 
     /**
      * Prints complete path of all nodes in the directory system.
-     * (NOTE: the restraint that this method returns
+     * (NOTE: the restraints of this method, such as return type and arg type makes it a bad candidate for recursion)
      *
      * @param root
      */
     protected void retrieve(Node root) {
+        System.out.println("\nExecuting...");
         String results = this.getRootStructure(this.root());
-        System.out.println(results);
+        System.out.println(results + "\n\nDone!");
     }
 
-    
+
     private String getRootStructure(Folder root) {
         String results = "";
         // add to String array
@@ -93,11 +149,12 @@ public class DirectorySystem {
     private List<String> getChildRecursive(Node parent, String prefix) {
         List<String> resultList = new ArrayList<String>();
 
-        if (parent.getType() == TYPE_FOLDER) {
+        if (parent.getType() == TYPE_DIR) {
+            // type casting to allow parent to getChildren()
             Folder p = (Folder) parent;
             for (Node n : p.getChildren()) {
                 resultList.add(prefix + n);
-                resultList.addAll(getChildRecursive(n, prefix + n + "/"));
+                resultList.addAll(getChildRecursive(n, prefix + n + "/")); // FIXME: potential stack overflow if node structure not optimized
             }
         }
 
@@ -115,6 +172,11 @@ public class DirectorySystem {
             case 2:
                 ExampleSystem1 ex1 = new ExampleSystem1();
                 ex1.retrieve(ex1.root());
+                return;
+            case 3:
+                ExampleSystem2 ex2 = new ExampleSystem2();
+                ex2.retrieve(ex2.root());
+                return;
         }
     }
 }
