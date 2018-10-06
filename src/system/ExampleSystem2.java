@@ -6,7 +6,7 @@ package system;
 public class ExampleSystem2 extends DirectorySystem {
 
     public ExampleSystem2() {
-        System.out.println("\nInitializing Example 1 system...\n");
+        System.out.println("\nInitializing Example 2 system...\n");
 
         Folder v1 = new Folder("v1");
         Folder v2 = new Folder("v2");

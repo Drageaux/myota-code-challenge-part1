@@ -15,12 +15,13 @@ public class Main {
         while (!exit) {
             Scanner sc = new Scanner(System.in);
             int choice = -1;
-            while (choice < 0 || choice > 3) {
+            while (choice < 0 || choice > 4) {
                 try {
                     System.out.println("MAIN MENU");
                     System.out.println("1. Print complete path of all nodes for initial system");
                     System.out.println("2. Print complete path of all nodes for example 1");
                     System.out.println("3. Print complete path of all nodes for example 2");
+                    System.out.println("4. Example 3, which allows cyclical node (for demonstration of detectCycle())");
                     System.out.println("0. Exit");
                     System.out.print("Enter your command: ");
                     choice = Integer.parseInt(sc.nextLine()); // already throws

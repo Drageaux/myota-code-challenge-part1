@@ -15,6 +15,7 @@ public class DirectorySystem {
     public DirectorySystem() {
     }
 
+
     /**
      * @return the root folder Node
      */
@@ -24,7 +25,7 @@ public class DirectorySystem {
 
 
     /**
-     * Adds a child node to the parent node.
+     * Adds a child node to the parent node, without adding illegal arrows.
      *
      * @param parent
      * @param child
@@ -37,7 +38,7 @@ public class DirectorySystem {
 
             // BFS to find duplicate
             if (child.getType() == TYPE_DIR) {
-                if (this.childrenBreadFirstSearch(parent, child)) {
+                if (this.childrenBreadthFirstSearch(parent, child)) {
                     System.out.println("STOP, found duplicate");
                     return false;
                 }
@@ -54,6 +55,7 @@ public class DirectorySystem {
 
     /**
      * Detects whether node creates a cycle (only folders can create cycles).
+     * If the node find itself in any of its children's paths, then it's a cycle.
      * (NOTE: suffers in performance as both numbers of parents and children increase)
      *
      * @param node
@@ -65,17 +67,25 @@ public class DirectorySystem {
             System.out.println(node + " is a file and cannot create cycle");
             return false;
         } else if (node.getType() == TYPE_DIR) {
-            if (this.childrenBreadFirstSearch(node, node)) {
-                System.out.println("TRUE. This node creates a cycle.");
+            if (this.childrenBreadthFirstSearch(node, node)) {
+                System.out.println("Yes. Node " + node + " creates a cycle.");
                 return true;
             }
         }
 
+        System.out.println("No. Node " + node + " does NOT create a cycle.");
         return false;
     }
 
 
-    protected boolean childrenBreadFirstSearch(Node parent, Node child) {
+    /**
+     * Breadth-first search if parent is in any of child's children (recursively).
+     *
+     * @param parent
+     * @param child
+     * @return true if parent in children's path; false otherwise
+     */
+    protected boolean childrenBreadthFirstSearch(Node parent, Node child) {
         // for each child of startingNode, add child to queue
         //  once all node are added, remove node from head of queue
         //  update startingNode to be what is head of queue
@@ -124,6 +134,12 @@ public class DirectorySystem {
     }
 
 
+    /**
+     * Get all children for root, then return a new-line-separated list of children paths.
+     *
+     * @param root
+     * @return
+     */
     private String getRootStructure(Folder root) {
         String results = "";
         // add to String array
@@ -146,6 +162,14 @@ public class DirectorySystem {
     }
 
 
+    /**
+     * Compile an array of paths recursively.
+     * (NOTE: could potentially be done with BFS, which didn't come to mind)
+     *
+     * @param parent
+     * @param prefix
+     * @return
+     */
     private List<String> getChildRecursive(Node parent, String prefix) {
         List<String> resultList = new ArrayList<String>();
 
@@ -162,6 +186,11 @@ public class DirectorySystem {
     }
 
 
+    /**
+     * Receive command and execute.
+     *
+     * @param cmd
+     */
     public void execute(int cmd) {
         switch (cmd) {
             default:
@@ -176,6 +205,9 @@ public class DirectorySystem {
             case 3:
                 ExampleSystem2 ex2 = new ExampleSystem2();
                 ex2.retrieve(ex2.root());
+                return;
+            case 4:
+                ExampleSystem3 ex3 = new ExampleSystem3();
                 return;
         }
     }
