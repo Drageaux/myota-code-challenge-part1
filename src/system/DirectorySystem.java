@@ -36,17 +36,26 @@ public class DirectorySystem {
         // parent must be a folder
         // parent and child instances are not the same
         if (parent.getType() == TYPE_DIR && parent != child) {
-            // detect an instance of all tables
+
+            Folder childFolder = (Folder) child;
+            // TODO: need BFS
+            if (childFolder.children.contains(parent)) {
+                System.out.println("STOP, FOUND CYCLE");
+            }
 
             parent.children.add(child);
             System.out.println("parent " + parent + " added child " + child);
+        } else {
+            System.out.println("parent " + parent + " is not a folder or is the same as child " + child);
         }
         return false;
     }
 
+    protected
+
 
     /**
-     * Detects whether node creates a cycle.
+     * Detects whether node creates a cycle (only folders can create cycles).
      * (NOTE: suffers in performance as both numbers of parents and children increase)
      *
      * @param node
@@ -54,33 +63,12 @@ public class DirectorySystem {
      */
     protected boolean detectCycle(Node node) {
         if (node.getType() == TYPE_FILE) {
+            // FIXME: not sure if this is 100% true; not specified in requirements; could be implied
+            System.out.println(node + " is a file and cannot create cycle");
             return false;
         } else if (node.getType() == TYPE_DIR) {
-            // in order to detect cycles, we need to record all parents as well as children
             Folder folder = (Folder) node;
-            HashSet<Node> set = new HashSet<Node>();
-            for (Node n : folder.getChildren()) {
-                if (this.findCurrentNodeInChildren(n, set)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    protected boolean findCurrentNodeInChildren(Node parent, HashSet<Node> set) {
-        if (parent.getType() != TYPE_DIR) return false;
-
-        Folder parentFolder = (Folder) parent;
-        for (Node n : parentFolder.getChildren()) {
-            if (set.contains(n)) {
-                return true;
-            } else {
-
-                set.add(n);
-                this.findCurrentNodeInChildren(n, set);
-            }
+            folder.children.contains(node);
         }
 
         return false;
@@ -129,7 +117,7 @@ public class DirectorySystem {
             Folder p = (Folder) parent;
             for (Node n : p.getChildren()) {
                 resultList.add(prefix + n);
-                resultList.addAll(getChildRecursive(n, prefix + n + "/"));
+                resultList.addAll(getChildRecursive(n, prefix + n + "/")); // FIXME: potential stack overflow if node structure not optimized
             }
         }
 
@@ -147,6 +135,9 @@ public class DirectorySystem {
             case 2:
                 ExampleSystem1 ex1 = new ExampleSystem1();
                 ex1.retrieve(ex1.root());
+            case 3:
+                ExampleSystem2 ex2 = new ExampleSystem2();
+                ex2.retrieve(ex2.root());
         }
     }
 }

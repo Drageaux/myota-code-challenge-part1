@@ -20,6 +20,7 @@ public class Main {
                     System.out.println("Menu");
                     System.out.println("1. Print complete path of all nodes");
                     System.out.println("2. Print complete path of all nodes for example 1");
+                    System.out.println("3. Print complete path of all nodes for example 2");
                     System.out.println("0. Exit");
                     System.out.print("Enter your command: ");
                     choice = Integer.parseInt(sc.nextLine()); // already throws
