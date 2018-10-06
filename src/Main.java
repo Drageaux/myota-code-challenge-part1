@@ -24,7 +24,7 @@ public class Main {
                     System.out.print("Enter your command: ");
                     choice = Integer.parseInt(sc.nextLine()); // already throws
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid command. Please try again (0-4).");
+                    System.out.println("Invalid command. Please try again (0-3).");
                 }
             }
             if (choice == 0) {
