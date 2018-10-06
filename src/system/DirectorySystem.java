@@ -1,8 +1,8 @@
 package system;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import java.util.*;
 
 import static system.Command.*;
 import static system.Type.*;
@@ -37,10 +37,13 @@ public class DirectorySystem {
         // parent and child instances are not the same
         if (parent.getType() == TYPE_DIR && parent != child) {
 
-            Folder childFolder = (Folder) child;
             // TODO: need BFS
-            if (childFolder.children.contains(parent)) {
-                System.out.println("STOP, FOUND CYCLE");
+            if (child.getType() == TYPE_DIR) {
+                Folder childFolder = (Folder) child;
+                if (this.childrenBreadFirstSearch(parent)) {
+                    System.out.println("STOP, found duplicate");
+                    return false;
+                }
             }
 
             parent.children.add(child);
@@ -51,7 +54,42 @@ public class DirectorySystem {
         return false;
     }
 
-    protected
+    protected boolean childrenBreadFirstSearch(Node node) {
+        // for each child of startingNode, add child to queue
+        //  once all node are added, remove node from head of queue
+        //  update startingNode to be what is head of queue
+
+        HashSet<Node> visited = new HashSet<Node>();
+        Queue<Node> q = new LinkedList<Node>();
+
+        q.add(node);
+
+        while (q.size() != 0) {
+            Node currTop = q.poll();
+            System.out.println("queuing " + currTop);
+
+            if (node.getType() == TYPE_DIR) {
+                Folder folder = (Folder) currTop; // type cast to get children
+                // list all child folders
+                for (Node n :
+                        (List<Node>) folder.getChildren()
+                                .stream()
+                                .filter(x -> x.getType() == TYPE_DIR)
+                        ) {
+                    if (n == node) {
+                        System.out.println("STOP, found match");
+                        return true;
+                    } else {
+                        visited.add(folder);
+                        q.add(n);
+                    }
+                }
+            }
+        }
+
+
+        return false;
+    }
 
 
     /**
@@ -83,7 +121,7 @@ public class DirectorySystem {
      */
     protected void retrieve(Node root) {
         String results = this.getRootStructure(this.root());
-        System.out.println(results);
+        System.out.println(results + "\nDone");
     }
 
 
@@ -135,9 +173,11 @@ public class DirectorySystem {
             case 2:
                 ExampleSystem1 ex1 = new ExampleSystem1();
                 ex1.retrieve(ex1.root());
+                return;
             case 3:
                 ExampleSystem2 ex2 = new ExampleSystem2();
                 ex2.retrieve(ex2.root());
+                return;
         }
     }
 }
