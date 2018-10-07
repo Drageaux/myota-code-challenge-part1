@@ -9,15 +9,14 @@ public class Main {
         DirectorySystem dirSystem = new DirectorySystem();
         boolean exit = false;
 
-
         System.out.println("Welcome to the Multi-Parent Directory System!\n");
 
+        Scanner sc = new Scanner(System.in);
         while (!exit) {
-            Scanner sc = new Scanner(System.in);
             int choice = -1;
             while (choice < 0 || choice > 4) {
                 try {
-                    System.out.println("MAIN MENU");
+                    System.out.println("\nMAIN MENU");
                     System.out.println("1. Print complete path of all nodes for initial system");
                     System.out.println("2. Print complete path of all nodes for example 1");
                     System.out.println("3. Print complete path of all nodes for example 2");
@@ -38,7 +37,7 @@ public class Main {
 
             System.out.print("Press Enter/Return to continue...");
             String input = sc.nextLine();
-            System.out.println("===================================================\n\n");
+            System.out.println("===================================================\n");
         }
     }
 }
